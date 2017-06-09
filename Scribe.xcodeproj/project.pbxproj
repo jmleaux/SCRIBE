@@ -54,14 +54,54 @@
 		CA69DC041EEB33D0007A3B5A /* Scribe */ = {
 			isa = PBXGroup;
 			children = (
-				CA69DC051EEB33D0007A3B5A /* AppDelegate.swift */,
-				CA69DC071EEB33D0007A3B5A /* ViewController.swift */,
+				CA69DC171EEB33F4007A3B5A /* Model */,
+				CA69DC181EEB33FD007A3B5A /* View */,
 				CA69DC091EEB33D0007A3B5A /* Main.storyboard */,
-				CA69DC0C1EEB33D0007A3B5A /* Assets.xcassets */,
 				CA69DC0E1EEB33D0007A3B5A /* LaunchScreen.storyboard */,
-				CA69DC111EEB33D0007A3B5A /* Info.plist */,
+				CA69DC191EEB3402007A3B5A /* Controller */,
+				CA69DC1A1EEB342E007A3B5A /* Delegates */,
+				CA69DC1B1EEB3440007A3B5A /* Resources */,
 			);
 			path = Scribe;
+			sourceTree = "<group>";
+		};
+		CA69DC171EEB33F4007A3B5A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		CA69DC181EEB33FD007A3B5A /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		CA69DC191EEB3402007A3B5A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CA69DC071EEB33D0007A3B5A /* ViewController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		CA69DC1A1EEB342E007A3B5A /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				CA69DC051EEB33D0007A3B5A /* AppDelegate.swift */,
+			);
+			name = Delegates;
+			sourceTree = "<group>";
+		};
+		CA69DC1B1EEB3440007A3B5A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CA69DC0C1EEB33D0007A3B5A /* Assets.xcassets */,
+				CA69DC111EEB33D0007A3B5A /* Info.plist */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
