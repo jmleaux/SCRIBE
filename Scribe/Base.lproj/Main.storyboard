@@ -63,7 +63,7 @@
                                 <color key="textColor" red="0.85882352939999995" green="0.10980392160000001" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Tap the button below to transcribe the audio embedded in the app..." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="2Pz-Sh-gkg">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text=" " textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="2Pz-Sh-gkg">
                                 <rect key="frame" x="36" y="75" width="248" height="372"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -99,6 +99,7 @@
                     <connections>
                         <outlet property="activitySpinner" destination="THR-R8-43P" id="vH7-EP-w4t"/>
                         <outlet property="playLbl" destination="ov1-kO-wvs" id="Wtw-At-Q64"/>
+                        <outlet property="transcribeButton" destination="tpa-CM-wqd" id="uPz-u4-wkd"/>
                         <outlet property="transcriptionTextField" destination="2Pz-Sh-gkg" id="dpF-oA-MuV"/>
                     </connections>
                 </viewController>

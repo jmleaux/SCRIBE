@@ -16,6 +16,7 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, SFSpeechRecognize
     @IBOutlet weak var transcriptionTextField: UITextView!
     @IBOutlet weak var activitySpinner: UIActivityIndicatorView!
     @IBOutlet weak var playLbl: UILabel!
+    @IBOutlet weak var transcribeButton: CircleButton!
     
     var audioPlayer: AVAudioPlayer!
     private let speechrecognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))!
@@ -30,69 +31,6 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, SFSpeechRecognize
         
     }
     
-    
-    func requestSpeechAuth() {
-        
-        SFSpeechRecognizer.requestAuthorization { authStatus in
-            if authStatus == SFSpeechRecognizerAuthorizationStatus.authorized {
-                if let path = Bundle.main.url(forResource: "JML", withExtension: "m4a") {
-                    do {
-                        let sound = try AVAudioPlayer(contentsOf: path)
-                        self.audioPlayer = sound
-                        self.audioPlayer.delegate = self
-                        sound.play()
-                    } catch {
-                        print("Error!")
-                    }
-                    
-                    let recognizer = SFSpeechRecognizer()
-                    let request = SFSpeechURLRecognitionRequest(url: path)
-//                    print("about to run recognizer")
-                    recognizer?.recognitionTask(with: request) { (result, error) in
-                        if let error = error {
-                            print("threre was an error \(error)")
-                        } else {
-                            self.transcriptionTextField.text = result?.bestTranscription.formattedString
-//                            print(result?.bestTranscription.formattedString)
-                        }
-                        
-                    }
-                }
-            }
-        }
-    }
-    
-    func requestSpeechAuthFromMic() {       // audio source is microphone!
-        
-        SFSpeechRecognizer.requestAuthorization { authStatus in
-            if authStatus == SFSpeechRecognizerAuthorizationStatus.authorized {
-//                if let path = Bundle.main.url(forResource: "JML", withExtension: "m4a") {
-//                    do {
-//                        let sound = try AVAudioPlayer(contentsOf: path)
-//                        self.audioPlayer = sound
-//                        self.audioPlayer.delegate = self
-//                        sound.play()
-//                    } catch {
-//                        print("Error!")
-//                    }
-                
-                let recognizer = SFSpeechRecognizer()
-                let request = SFSpeechAudioBufferRecognitionRequest()
-                request.shouldReportPartialResults = true
-//                let recordingFormat = inputNode.outputFormat(forBus: 0)
-                recognizer?.recognitionTask(with: request) { (result, error) in
-                    if let error = error {
-                        print("threre was an error \(error)")
-                    } else {
-                        self.transcriptionTextField.text = result?.bestTranscription.formattedString
-                        //                            print(result?.bestTranscription.formattedString)
-                    }
-                    
-                }
-                
-            }
-        }
-    }
     
     func startRecording() throws {
         
@@ -113,15 +51,23 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, SFSpeechRecognize
         
         recognitionRequest.shouldReportPartialResults = true
         
-        recognitionTask = speechrecognizer.recognitionTask(with: recognitionRequest) { result, error in
+        recognitionTask = speechrecognizer.recognitionTask(with: recognitionRequest) { (result, error) in
             var isFinal = true
             
             if let result = result {
                 self.transcriptionTextField.text = result.bestTranscription.formattedString
+//                print(result.bestTranscription.formattedString)
                 isFinal = result.isFinal
             }
             
-            if error != nil || isFinal {
+            if error != nil {
+                print("ERROR: the code is \n\(error!)")
+            }
+            
+            if isFinal {
+                
+                print("finished - isFinal is \(isFinal)")
+                
                 self.audioEngine.stop()
                 inputNode.removeTap(onBus: 0)
                 self.recognitionRequest = nil
@@ -130,35 +76,43 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, SFSpeechRecognize
             }
         }
         
+        let recordingFormat = inputNode.outputFormat(forBus: 0)
+        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
+            self.recognitionRequest?.append(buffer)
+        }
         
+        audioEngine.prepare()
+        try audioEngine.start()
+        
+        self.transcriptionTextField.text = "I'm ready for you to dictate..."
+        
+    }
+    
+    func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {
+        if available {
+            transcribeButton.isEnabled = true
+            activitySpinner.isHidden = true
+            playLbl.text = "Press to start dictation"
+        } else {
+            transcribeButton.isEnabled = false
+            playLbl.text = "Recognition not available"
+        }
     }
     
     @IBAction func playButtonPressed(_ sender: Any) {
         
         if audioEngine.isRunning {
+            print("audioEngine is running...")
             audioEngine.stop()
             recognitionRequest?.endAudio()
             activitySpinner.stopAnimating()
             activitySpinner.isHidden = true
             playLbl.text = "Press to record and transcribe..."
         } else {
+            print("audioEngine not running, trying startRecording...")
             try! startRecording()
             playLbl.text = "TRANSCRIBING...press to stop..."
         }
-        
-//        playLbl.text = "TRANSCRIBING AUDIO..."
-//        activitySpinner.isHidden = false
-//        activitySpinner.startAnimating()
-//        requestSpeechAuth()
-        
-        
-    }
-    
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        player.stop()
-        activitySpinner.stopAnimating()
-        activitySpinner.isHidden = true
-        playLbl.text = "READY TO TRANSCRIBE"
     }
 }
 
