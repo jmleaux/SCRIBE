@@ -65,9 +65,7 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, SFSpeechRecognize
             }
             
             if isFinal {
-                
-                print("finished - isFinal is \(isFinal)")
-                
+
                 self.audioEngine.stop()
                 inputNode.removeTap(onBus: 0)
                 self.recognitionRequest = nil
@@ -102,14 +100,12 @@ class ViewController: UIViewController, AVAudioPlayerDelegate, SFSpeechRecognize
     @IBAction func playButtonPressed(_ sender: Any) {
         
         if audioEngine.isRunning {
-            print("audioEngine is running...")
             audioEngine.stop()
             recognitionRequest?.endAudio()
             activitySpinner.stopAnimating()
             activitySpinner.isHidden = true
             playLbl.text = "Press to record and transcribe..."
         } else {
-            print("audioEngine not running, trying startRecording...")
             try! startRecording()
             playLbl.text = "TRANSCRIBING...press to stop..."
         }
