@@ -41,6 +41,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Your permission is required to listen through the microphone...</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Your permission is required to allow me to transcribe your speech...</string>
 </dict>
