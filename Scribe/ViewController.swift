@@ -11,8 +11,8 @@ import Speech
 import AVFoundation
 
 
-class ViewController: UIViewController {
-
+class ViewController: UIViewController, AVAudioPlayerDelegate {
+    
     @IBOutlet weak var transcriptionTextField: UITextView!
     @IBOutlet weak var activitySpinner: UIActivityIndicatorView!
     @IBOutlet weak var playLbl: UILabel!
@@ -24,18 +24,17 @@ class ViewController: UIViewController {
         activitySpinner.isHidden = true
         
     }
-
     
-    func requestSpeechAuth() -> String {
-        
-        var speechText: String = ""
+    
+    func requestSpeechAuth() {
         
         SFSpeechRecognizer.requestAuthorization { authStatus in
             if authStatus == SFSpeechRecognizerAuthorizationStatus.authorized {
-                if let path = Bundle.main.url(forResource: "test", withExtension: "m4a") {
+                if let path = Bundle.main.url(forResource: "JML", withExtension: "m4a") {
                     do {
                         let sound = try AVAudioPlayer(contentsOf: path)
                         self.audioPlayer = sound
+                        self.audioPlayer.delegate = self
                         sound.play()
                     } catch {
                         print("Error!")
@@ -43,35 +42,36 @@ class ViewController: UIViewController {
                     
                     let recognizer = SFSpeechRecognizer()
                     let request = SFSpeechURLRecognitionRequest(url: path)
+//                    print("about to run recognizer")
                     recognizer?.recognitionTask(with: request) { (result, error) in
                         if let error = error {
-                            print("There was an error: \(error)")
+                            print("threre was an error \(error)")
                         } else {
+                            self.transcriptionTextField.text = result?.bestTranscription.formattedString
 //                            print(result?.bestTranscription.formattedString)
-                            if result?.bestTranscription.formattedString != nil {
-                                speechText = (result?.bestTranscription.formattedString)!
-                            } else {
-                                speechText = ""
-                            }
                         }
+                        
                     }
                 }
             }
         }
-        return(speechText)
     }
     
-
+    
     @IBAction func playButtonPressed(_ sender: Any) {
         playLbl.text = "TRANSCRIBING AUDIO..."
         activitySpinner.isHidden = false
         activitySpinner.startAnimating()
-        transcriptionTextField.text = requestSpeechAuth()
-        playLbl.text = "PRESS TO TRANSCRIBE"
-        activitySpinner.stopAnimating()
-        activitySpinner.isHidden = true
+        requestSpeechAuth()
+        
         
     }
-
+    
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        player.stop()
+        activitySpinner.stopAnimating()
+        activitySpinner.isHidden = true
+        playLbl.text = "READY TO TRANSCRIBE"
+    }
 }
 

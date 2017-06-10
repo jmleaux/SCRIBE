@@ -54,7 +54,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="playButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XUy-oE-SZ1"/>
+                                    <action selector="playButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dAd-NR-v3z"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PRESS TO TRANSCRIBE" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ov1-kO-wvs">
@@ -98,7 +98,7 @@
                     </view>
                     <connections>
                         <outlet property="activitySpinner" destination="THR-R8-43P" id="vH7-EP-w4t"/>
-                        <outlet property="playLbl" destination="ov1-kO-wvs" id="fgw-4l-xTV"/>
+                        <outlet property="playLbl" destination="ov1-kO-wvs" id="Wtw-At-Q64"/>
                         <outlet property="transcriptionTextField" destination="2Pz-Sh-gkg" id="dpF-oA-MuV"/>
                     </connections>
                 </viewController>
